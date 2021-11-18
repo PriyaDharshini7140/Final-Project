@@ -1,0 +1,40 @@
+@import '../../../node_modules/@syncfusion/ej2-gantt/styles/material.css';
+
+@import '../../../node_modules/@syncfusion/ej2-base/styles/material.css';
+@import '../../../node_modules/@syncfusion/ej2-buttons/styles/material.css';
+@import '../../../node_modules/@syncfusion/ej2-calendars/styles/material.css';
+@import '../../../node_modules/@syncfusion/ej2-dropdowns/styles/material.css';
+@import '../../../node_modules/@syncfusion/ej2-gantt/styles/material.css';
+@import '../../../node_modules/@syncfusion/ej2-grids/styles/material.css';
+@import '../../../node_modules/@syncfusion/ej2-inputs/styles/material.css';
+@import '../../../node_modules/@syncfusion/ej2-layouts/styles/material.css';
+@import '../../../node_modules/@syncfusion/ej2-lists/styles/material.css';
+@import '../../../node_modules/@syncfusion/ej2-navigations/styles/material.css';
+@import '../../../node_modules/@syncfusion/ej2-popups/styles/material.css';
+@import '../../../node_modules/@syncfusion/ej2-richtexteditor/styles/material.css';
+@import '../../../node_modules/@syncfusion/ej2-treegrid/styles/material.css';
+
+.home-nav{
+display: flex;
+justify-content: center;
+align-items: center;
+justify-self: center;
+background-color: #34BE82;
+color: white;
+width:310px;
+margin: auto;
+line-height: 35px;
+border-radius: 20px;
+}
+.home-nav-li{
+    display: inline-block;
+    padding:0 1rem;
+    cursor: pointer;
+}
+.home-nav-li-active{
+    display: inline-block;
+    padding:0 1rem;
+    cursor: pointer;
+    border-radius: 15px;
+    background-color: #2F86A6 ;
+}

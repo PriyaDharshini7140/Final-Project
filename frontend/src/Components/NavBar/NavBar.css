@@ -1,0 +1,200 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Poppins', sans-serif;
+ 
+}
+
+nav {
+    position: fixed;
+    top:0;
+    background-color:white;
+    box-shadow: 0px 0px 10px #B7B7B7;
+    height: 60px;
+    width: 100%;
+  }
+  
+  label.logo {
+    color:#2F86A6;
+    font-size: 30px;
+    line-height: 60px;
+    padding: 0 50px;
+    font-weight: bold;
+  }
+  label.logo span{
+      color:#34BE82;
+  }
+  nav ul {
+    float: right;
+    margin-right: 20px;
+  }
+  nav ul li {
+    display: inline-block;
+    line-height: 60px;
+    margin: 0 5px;
+  }
+  nav ul li a {
+    color:#2F86A6;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 7px 13px;
+    border-radius: 3px;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+  
+  .active{
+    background: #34BE82;
+    border-radius: 20px;
+    color: white;
+  }
+  a:hover {
+    background: #34BE82;
+    transform: 0.5s;
+    border-radius: 20px;
+    color: white;
+  }
+  .checkbtn {
+    font-size: 30px;
+    color: #2F86A6;
+    float: right;
+    line-height: 60px;
+    margin-right: 40px;
+    margin-top: 13px;
+    cursor: pointer;
+    display: none;
+  }
+  #check {
+    display: none;
+  }
+  
+  
+  
+  @media  (max-width: 1024px){
+    label.logo {
+      font-size: 20px;
+      font-weight: bold;
+      padding-left: 20px;
+    }
+    nav ul li a {
+      font-size: 14px;
+    }
+  }
+  @media (max-width: 1024px){
+    .checkbtn {
+      display: flex;
+    }
+    nav ul {
+      position: fixed;
+      width: 100%;
+      height: 100vh;
+      background: #2F86A6;
+      top: 60px;
+      left: -100%;
+      text-align: center;
+      transition: all 0.5s;
+    }
+    nav ul li {
+      display: flex;
+      justify-content: center;
+      
+    }
+    nav ul li a {
+      font-size: 20px;
+      color:white
+    }
+  
+   
+    nav ul li a:hover {
+      
+     border-radius: 20px;
+     border: 2px solid;
+    border-radius: 20px;
+      color:white;
+    transform: 0.5s;
+    }
+    #check:checked ~ ul {
+      left: 0;
+    }
+  }
+  
+  footer{
+      height: 19vh;
+      
+      
+  }
+  
+ 
+.footer-header{
+    display: flex;
+    line-height: 60px;
+   justify-content: center;
+flex-direction: row;
+ box-shadow: 1px 0px 10px #B7B7B7;
+   
+}
+footer h4{
+  font-size: 20px;
+  padding-right: 30px;
+}
+
+footer i{
+
+   
+    padding:15px 10px;
+  
+}
+footer p{
+
+    font-size: 20px;
+    font-weight: lighter;
+    text-align: justify;
+    width: 400px;
+  }
+ 
+ 
+ .footer-footer{
+display: flex;
+height: 40px;
+margin-top: 10px;
+box-shadow: 1px 0px 5px #B7B7B7;
+background: white;
+color:#2F86A6;
+ }
+ .footer-footer div{
+   display: flex;
+   align-items: center;
+   margin: auto;
+  
+ }
+ @media (max-width: 1024px){
+  footer{
+    height: 20vh;
+    background-color:white;
+    
+}
+.footer-header{
+  display: flex;
+flex-direction: column;
+  
+ justify-content: center;
+
+align-items: center;
+ box-shadow: 1px 0px 10px #B7B7B7;
+}
+footer h4{
+  font-size: 15px;
+  padding-right: 10px;
+}
+footer i{
+  font-size: 5px;
+
+
+  padding:2px 5px;
+}
+.footer-footer div{
+font-size: 10px;
+font-weight: bold;
+ 
+}
+ }
