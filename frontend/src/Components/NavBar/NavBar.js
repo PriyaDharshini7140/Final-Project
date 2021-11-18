@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import {AiOutlineMenu} from 'react-icons/ai'
 import "./NavBar.css";
+import TransitionsModal from "../Modal/AddProject";
 function NavBar() {;
   let location = useLocation();
  
@@ -18,7 +19,7 @@ function NavBar() {;
      <ul>
          
      <li><Link to="/" className={location.pathname==="/" ? "active" :""}>Home</Link></li>
-<li><Link to="/AddProject" className={location.pathname==="/AddProject" ? "active" :""}>Add Project</Link></li>
+<li><TransitionsModal/></li>
 <li><Link to="/Dashboard" className={location.pathname==="/Dashboard" ? "active" :""}>Dashboard</Link></li>     
      </ul>
     </nav>

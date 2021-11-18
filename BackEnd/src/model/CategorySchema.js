@@ -3,10 +3,14 @@ const Schema = mongoose.Schema;
 const CategorySchema = new Schema({
     Project_id:{
         type: Schema.Types.ObjectId,
-        ref: 'Projects'
+        ref: 'projects'
 },
- 
-    UI :{
+ Task:[
+    {
+        Task_name:{
+            type:String,
+            required:true
+        },
         Start_date:{
         type:String,
         required:true
@@ -18,50 +22,16 @@ const CategorySchema = new Schema({
     Percentage:{
         type:Number,
         required:true
-    }
-},
-API:{
-    Start_date:{
-        type:String,
-        required:true
     },
-    End_date:{
+    Duration:{
         type:String,
-        required:true
-    },
-    Percentage:{
-        type:Number,
         required:true
     }
-},
-   DB:{
-    Start_date:{
-        type:String,
-        required:true
-    },
-    End_date:{
-        type:String,
-        required:true
-    },
-    Percentage:{
-        type:Number,
-        required:true
-    }
-   },
-   TEST:{
-    Start_date:{
-        type:String,
-        required:true
-    },
-    End_date:{
-        type:String,
-        required:true
-    },
-    Percentage:{
-        type:Number,
-        required:true
-    }
-   }
+}
+ ]
+    
+
+ 
     
    
 }, { timestamps: true })
