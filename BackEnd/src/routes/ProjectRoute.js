@@ -7,8 +7,9 @@ router.post('/addProject', async (req, res) => {
 	console.log(req.body);
 
 	const project = new Project(req.body);
-	var Start_date = moment(req.body.Start_date, "MM-DD-YYYY");
-	var End_date = moment(req.body.End_date, "MM-DD-YYYY");
+	var Start_date = moment(req.body.Start_date, "YYYY-MM-DD");
+	var End_date = moment(req.body.End_date, "YYYY-MM-DD");
+	console.log(Start_date,End_date);
 	var d=End_date.diff(Start_date,"days");
 	var date = moment.duration(d, "days").humanize();
 	if(d  > 90){
@@ -21,7 +22,7 @@ router.post('/addProject', async (req, res) => {
 	}
 	project.Duration= date;
 	try {
-		 await project.save();
+		  await project.save();
 		res.status(201).send(project);
 	} catch (error) {
 		

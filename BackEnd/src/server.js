@@ -7,8 +7,10 @@ const cors = require("cors");
 const port = 4000;
 
 const app = express();
+app.use(express.urlencoded({extended:true}));
+app.use(express.json())
 app.use(cors());
-app.use(express.json());
+
 const project = require('./routes/ProjectRoute')
 const category = require('./routes/CategoryRoute')
 mongoose.connect(process.env.DB,{

@@ -19,8 +19,9 @@ function NavBar() {;
      <ul>
          
      <li><Link to="/" className={location.pathname==="/" ? "active" :""}>Home</Link></li>
-<li><TransitionsModal/></li>
-<li><Link to="/Dashboard" className={location.pathname==="/Dashboard" ? "active" :""}>Dashboard</Link></li>     
+     <li><Link to="/AddProject" className={location.pathname==="/AddProject" ? "active" :""}>Add Project</Link></li>
+
+    
      </ul>
     </nav>
     </div>

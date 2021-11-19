@@ -1,108 +1,255 @@
 import * as React from 'react';
-import Backdrop from '@mui/material/Backdrop';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Fade from '@mui/material/Fade';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import './AddProject.css';
 
-import { TextField } from '@mui/material';
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 1300,
-  bgcolor: 'white',
-  boxShadow: 15,
-padding:0,
-border:"1px solid #34BE82",
-borderRadius:'20px',
-  p: 0,
-};
+import './AddProject.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
+
 
 export default function TransitionsModal() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  
-const category = ["UI",'API','DB','TEST']
-  return (
-    <div>
-      <button className="modal-button" onClick={handleOpen}>Open modal</button>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-    
-          <Box sx={style}>
-              <div className='modal-top'>
-                  <p>ADD <span>PROJECT</span></p>
-              </div>
-              <div className='modal-form'>
-              <div className='gg'>
-                  <div className='g'>
-             <label for='projectname'>Project Name</label>
-              <input className='input' id='projectname' type='text' name='projectname' placeholder='Enter project name'/>
-              </div>
-              <div className='g'>
-              <label for='startdate'>Start Date</label>
-              <input className='input' id='startdate' type='date' name='startdate' placeholder='start date'/>
-              </div>
-              <div className='g'>
-              <label for='enddate'>End Date</label>
-              <input className='input' id='enddate' type='date' name='enddate'/>
-              </div>
-              </div>
-             <div>
-            
-                 
-                     {category.map((e)=>{
-                         console.log(e);
-                        return(
-                            <div>
-                                <p className='task'>{e}</p>
-                                <div className='gg'>
-                 
-              <div className='g'>
-              <label for='startdate'>Start Date</label>
-              <input className='input' id='startdate' type='date' name='startdate' placeholder='start date'/>
-              </div>
-              <div className='g'>
-              <label for='enddate'>End Date</label>
-              <input className='input' id='enddate' type='date' name='enddate'/>
-              </div>
-              <div className='g'>
-             <label for='Progress Percentage'>Progress</label>
-              <input className='input' id='Progress Percentage' type='text' name='projectname' placeholder='Enter Percentage'/>
-              </div>
-              </div>
-                            </div>
-                        )
-    
-                     })}
-                
-                
-              
-             </div>
+  const [project,setProject]=React.useState("")
+  const [startdate,setStartdate]=React.useState("")
+  const [enddate,setEnddate]=React.useState("")
+  const [desc,setDesc]=React.useState("")
+  const [projecterror,setProjecterror]=React.useState(false)
+  const [startdateerror,setStartdateerror]=React.useState(false)
+  const [enddateerror,setEnddateerror]=React.useState(false)
+  const [descerror,setDescerror]=React.useState(false)
+  const [task, settask] = React.useState([
+    { Task_name: 'UI', Start_date: '', End_date: '', Percentage: 0,Duration:0 },
+    { Task_name: 'API', Start_date: '', End_date: '', Percentage: 0,Duration:0 },
+    { Task_name: 'DB',Start_date: '', End_date: '', Percentage: 0,Duration:0},
+    { Task_name: 'TEST', Start_date: '',End_date: '', Percentage: 0,Duration:0},
+  ]);
+const navigate = useNavigate();
+console.log(navigate);
+  const Cache_project = JSON.parse(localStorage.getItem("Project"))
+  const Cache_task = JSON.parse(localStorage.getItem("task"))
+  // console.log(Cache_task);
+    const handleChangeInput = (id, event) => {
+    console.log(id);
+    const newc = task.map((i) => {
+      if (id === i.Task_name ) {
+       
+          i[event.target.name] = event.target.value;
+        }
+       
+      console.log(i);
+      return i;
+    });
 
-             <div className='modal-bottom'>
-                 <button className="modal-button-bottom">save</button>
-                 <button className="modal-button-bottom">submit</button>
-                 <button className="modal-button-bottom" onClick={()=>setOpen(false)}>close</button>
-             </div>
-             </div>
-             </Box>
+    settask(newc);
+  };
+
+ 
+  // console.log(task);
+
+   const reset =()=>{
+     setProject(" ")
+     setStartdate(" ")
+     setEnddate(" ")
+     setDesc(" ")
+     task.map((e)=>{
+       e.Start_date=" "
+       e.End_date =" "
+       e.Percentage=0
+       e.Duration=' '
+     })
+   }
+  
+const save=()=>{
+  const project_detail={ Task_name:project,
+    Start_date:startdate,
+    End_date:enddate,
+    Percentage:0,
+    Duration:0,
+   Description:desc}
+  localStorage.setItem("Project",JSON.stringify(project_detail))
+   localStorage.setItem("task",JSON.stringify(task))
+   navigate('/')
+}
+const submit =()=>{
+  if (project === "") {
+    setProjecterror("*enter project name")
+}
+else{
+  setProjecterror("")
+}
+if (startdate === "") {
+  setStartdateerror("*Select start date")
+}
+else{
+  setStartdateerror("")
+}
+if (enddate === "") {
+  setEnddateerror("*Select end date")
+}
+else{
+  setEnddateerror("")
+}
+if (desc === "") {
+  setDescerror("*enter project description")
+}
+else{
+  setDescerror("")
+}
+  if(projecterror === ''&&startdateerror===""&&enddate==="" && descerror===""){
+    console.log(task);
+    localStorage.removeItem("Project")
+    localStorage.removeItem("task")
+    
+         axios.post('http://localhost:4000/project/addProject',{
+            Task_name:project,
+      Start_date:startdate,
+      End_date:enddate,
+      Percentage:10,
+      Duration:0,
+     Description:desc
+          }).then((res)=>{
+            console.log(res.data);
+               axios.post('http://localhost:4000/category/addCategory',{
+              Project_id:res.data._id,
+              Task:task
+            }).then((res)=>{
+              console.log(res.data);
+              navigate('/')
+            }).catch((e)=>console.log(e))
+          }).catch((e)=>console.log(e))
+  }
+  
+        // reset()
+        
+}
+  return (
+    <div className="add-project">
+      <br/>
+      <br/>
+      <br/>
+      <br/>
       
-      </Modal>
+     
+          <div className="modal-top">
+        <p>
+          ADD <span>PROJECT</span>
+        </p>
+      </div>
+      <div className="modal-form">
+        <div className="gg">
+          <div>
+            <label for="projectname">Project Name</label>
+            <input
+              className="input"
+              id="projectname"
+              type="text"
+              value={Cache_project?Cache_project.Task_name:project}
+              name="projectname"
+              placeholder="Enter project name"
+              onChange={(e)=>{setProject(e.target.value) 
+                setProjecterror(" ")}}
+            />
+            <div className='error'>{projecterror === "" ?"":projecterror}</div>
+          </div>
+          <div>
+            <label for="startdate">Start Date</label>
+            <input
+              className="input"
+              id="startdate"
+              type="date"
+              value={Cache_project?Cache_project.Start_date:startdate}
+              name="startdate"
+              onChange={(e)=>{setStartdate(e.target.value)
+                setStartdateerror(" ")}}
+              placeholder="start date"
+              required
+            />
+            <div className='error'>{startdateerror === "" ?"":startdateerror}</div>
+          </div>
+          <div>
+            <label for="enddate">End Date</label>
+            <input className="input" id="enddate" type="date" value={Cache_project?Cache_project.End_date:enddate} name="enddate" onChange={(e)=>{setEnddate(e.target.value)
+              setEnddateerror(" ")}} required />
+            <div className='error'>{enddateerror === "" ?"":enddateerror}</div>
+          </div>
+         
+        </div>
+       
+        <div>
+        <div className="textarea">
+            <label for="Description">Description</label>
+            <textarea className="input-textarea" id="eDescription" type="date" value={Cache_project?Cache_project.Description:desc}   placeholder="Description" onChange={(e)=>{setDesc(e.target.value)
+              setDescerror(" ")}} required/>
+          </div>
+          <div className='error'>{descerror === "" ?"":descerror}</div>
+          {
+          task.map((e) => {
+           
+            return (
+              <div>
+                <p className="task">{e.Task_name}</p>
+                <div className="gg">
+                  <div>
+                    <label for="startdate">Start Date</label>
+                    <input
+                      className="input"
+                      id="startdate"
+                      type="date"
+                      name="Start_date"
+                      value={e.Start_date}
+                      placeholder="start date"
+                      required
+                      onChange={(ev) => handleChangeInput(e.Task_name, ev)}
+                    />
+                  </div>
+                  <div>
+                    <label for="enddate">End Date</label>
+                    <input
+                      className="input"
+                      id="enddate"
+                      type="date"
+                      value={e.End_date}
+                      name="End_date"
+                      required
+                      onChange={(ev) => handleChangeInput(e.Task_name, ev)}
+                    />
+                  </div>
+                  <div>
+                    <label for="Progress Percentage">Progress</label>
+                    <input
+                      className="input"
+                      id="Progress Percentage"
+                      type="number"
+                      name="Percentage"
+                      value={ e.Percentage}
+                      placeholder="Enter Percentage"
+                      required
+                      onChange={(ev) => handleChangeInput(e.Task_name, ev)}
+                    />
+                  </div>
+                </div>
+              </div>
+            );
+          })
+          }
+          
+        </div>
+
+        <div className="modal-bottom">
+          <button className="modal-button-bottom" onClick={()=>save()}>Save</button>
+          <button className="modal-button-bottom" onClick={()=>submit()}>Submit</button>
+          <button
+            className="modal-button-bottom"
+            onClick={() => navigate('/')}
+          >
+            Back
+          </button>
+        </div>
+      </div>
+            
+      
+     
     </div>
   );
 }

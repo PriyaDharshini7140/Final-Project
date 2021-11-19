@@ -20,60 +20,62 @@ function GanntChart() {
     }
     const history = useNavigate();
     useEffect(() => {
-        load()
+        return axios.get("http://localhost:4000/project/getAllProject").then((res)=>{
+            setstate(res.data)
+        })
        
      }, [])
      console.log(state);
-    // const  taskFields = {
-    //     id: '_id',
-    //         name: 'project_name',
-    //         startDate: 'StartDate',
-    //         duration: 'Duration',
-    //         progress: 'Progress',
-    //         child: 'category',
-    // };
-    // const GanttData = [
-    //     {
-    //         _id: 1,
-    //         project_name: 'Project Initiation',
-    //         Start_date: new Date('04/02/2019'),
-    //         End_Date: new Date('04/21/2019'),
-    //         category: [
-    //             {  _id: 2, project_name: 'Identify Site location', StartDate: new Date('04/02/2019'), Duration: 4, Progress: 50 },
-    //             {  _id: 3, project_name: 'Perform Soil test', StartDate: new Date('04/02/2019'), Duration: 4, Progress: 50 },
-    //             {  _id: 4, project_name: 'Soil test approval', StartDate: new Date('04/02/2019'), Duration: 4, Progress: 50 },
-    //         ]
-    //     },
-    //     {
-    //         _id: 5,
-    //         project_name: 'Project Estimation',
-    //         StartDate: new Date('04/02/2019'),
-    //         EndDate: new Date('04/21/2019'),
-    //         category: [
-    //             { _id: 6, project_name: 'Develop floor plan for estimation', StartDate: new Date('04/04/2019'), Duration: 3, Progress: 100 },
-    //             { _id: 7, project_name: 'List materials', StartDate: new Date('04/04/2019'), Duration: 3, Progress: 50 },
-    //             { _id: 8, project_name: 'Estimation approval', StartDate: new Date('04/04/2019'), Duration: 3, Progress: 50 }
-    //         ]
-    //     },
-    //     {
-    //         _id: 9,
-    //         project_name: 'Project Estimation',
-    //         StartDate: new Date('04/02/2019'),
-    //         EndDate: new Date('04/21/2019'),
-    //         category: [
-    //             { _id: 10, project_name: 'Develop floor plan for estimation', StartDate: new Date('04/04/2019'), Duration: 3, Progress: 50 },
-    //             { _id: 11, project_name: 'List materials', StartDate: new Date('04/04/2019'), Duration: 3, Progress: 50 },
-    //             { _id: 12, project_name: 'Estimation approval', StartDate: new Date('04/04/2019'), Duration: 3, Progress: 50 }
-    //         ]
-    //     },
-    // ];
-    // const editOptions = {
-    //     allowAdding: true,
-    //     allowEditing: true,
-    //     allowDeleting: true,
-    //     allowTaskbarEditing:true,
-    //     mode:"Dialog"
-    // };
+    const  taskFields = {
+        id: '_id',
+            name: 'project_name',
+            startDate: 'StartDate',
+            duration: 'Duration',
+            progress: 'Progress',
+            child: 'category',
+    };
+    const GanttData = [
+        {
+            _id: "1",
+            project_name: 'Project Initiation',
+            Start_date: new Date('04/02/2019'),
+            End_Date: new Date('04/21/2019'),
+            category: [
+                { _id: "1", project_name: 'Identify Site location', StartDate: new Date('04/02/2019'), Duration: 4, Progress: 50 },
+                {  _id: "1",project_name: 'Perform Soil test', StartDate: new Date('04/02/2019'), Duration: 4, Progress: 50 },
+                { _id: "1", project_name: 'Soil test approval', StartDate: new Date('04/02/2019'), Duration: 4, Progress: 50 },
+            ]
+        },
+        {
+            _id: "1",
+            project_name: 'Project Estimation',
+            StartDate: new Date('04/02/2019'),
+            EndDate: new Date('04/21/2019'),
+            category: [
+                { _id: "1",project_name: 'Develop floor plan for estimation', StartDate: new Date('04/04/2019'), Duration: 3, Progress: 100 },
+                {_id: "1", project_name: 'List materials', StartDate: new Date('04/04/2019'), Duration: 3, Progress: 50 },
+                {_id: "1", project_name: 'Estimation approval', StartDate: new Date('04/04/2019'), Duration: 3, Progress: 50 }
+            ]
+        },
+        {
+            _id: 9,
+            project_name: 'Project Estimation',
+            StartDate: new Date('04/02/2019'),
+            EndDate: new Date('04/21/2019'),
+            category: [
+                { _id: 10, project_name: 'Develop floor plan for estimation', StartDate: new Date('04/04/2019'), Duration: 3, Progress: 50 },
+                { _id: 11, project_name: 'List materials', StartDate: new Date('04/04/2019'), Duration: 3, Progress: 50 },
+                { _id: 12, project_name: 'Estimation approval', StartDate: new Date('04/04/2019'), Duration: 3, Progress: 50 }
+            ]
+        },
+    ];
+    const editOptions = {
+        allowAdding: true,
+        allowEditing: true,
+        allowDeleting: true,
+        allowTaskbarEditing:true,
+        mode:"Dialog"
+    };
     return (
         <div>
             <br/>
@@ -90,13 +92,16 @@ function GanntChart() {
                     </ul>
             </div>
             <br/>
-            {/* <GanttComponent dataSource={GanttData} 
+            <GanttComponent dataSource={GanttData} 
  height="550px" taskFields={taskFields} timelineSettings={{timelineViewMode:timeline}} editSettings={editOptions}
             toolbar={['Add',"Edit","Update"]}
             />
             <Inject services={[Edit,Toolbar]}></Inject>
-            <ColumnDirective field='Progress'></ColumnDirective> */}
+            <ColumnDirective field='Progress'></ColumnDirective>
+            <div>
             {state.map((e)=> <button onClick={()=>load1(e._id)}>{e.Task_name}</button>)}
+            </div>
+           
         </div>
     )
 }

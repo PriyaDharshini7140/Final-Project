@@ -3,13 +3,13 @@ const router = express.Router();
 const Category = require('../model/CategorySchema');
 var moment = require('moment');
 router.post('/addCategory', async (req, res) => {
-	// console.log(req.body);
+	 console.log(req.body);
 	
 	
 	const category = new Category(req.body);
 	category.Task.forEach((e)=>{
-		var Start_date = moment(e.Start_date, "MM-DD-YYYY");
-	var End_date = moment(e.End_date, "MM-DD-YYYY");
+		var Start_date = moment(e.Start_date, "YYYY-MM-DD");
+	var End_date = moment(e.End_date, "YYYY-MM-DD");
 	var d=End_date.diff(Start_date,"days");
 	var date = moment.duration(d, "days").humanize();
 	if(d  > 90){

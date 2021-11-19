@@ -18,7 +18,7 @@
 }
 .input{
     height: 45px;
-    width: 220px;
+    width: 180px;
     outline: none;
     font-size: 16px;
     border-radius: 5px;
@@ -28,6 +28,18 @@
     border-bottom-width: 2px;
   
   
+  }
+  .input-textarea{
+    height: 80px;
+    width: 600px;
+    outline: none;
+    font-size: 16px;
+    border-radius: 5px;
+    padding-left: 15px;
+    border:1px solid #2F86A6;
+  
+
+    border-bottom-width: 2px;
   }
   .input:focus{
       border-color:#34BE82;
@@ -86,11 +98,7 @@
 .modal-form input{
    margin:.5rem;
 }
-.g{
-    display: grid;
-    grid-template-columns:1fr 1fr ;
-   
-}
+
 .gg{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -99,3 +107,15 @@
     color:#34BE82;
     font-weight: bold;
 }
+.add-project{
+    width: 800px;
+    margin: auto;
+    
+    border-radius: 20px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    
+}
+.error{
+    color:red;
+    font-weight: bold;
+  }
