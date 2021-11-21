@@ -44,27 +44,28 @@ console.log(navigate);
     settask(newc);
   };
 
- 
+ let OverallPercentage = 0
   // console.log(task);
+  let percentage=0
+  let duration=0
+  task.forEach((e)=>{
+var Start_date = moment(e.Start_date, "YYYY-MM-DD");
+	var End_date = moment(e.End_date, "YYYY-MM-DD");
+	var d=End_date.diff(Start_date,"days");
+ percentage += e.Percentage * d;
+duration += d
+console.log("Percentage",percentage,duration);
 
-   const reset =()=>{
-     setProject(" ")
-     setStartdate(" ")
-     setEnddate(" ")
-     setDesc(" ")
-     task.map((e)=>{
-       e.Start_date=" "
-       e.End_date =" "
-       e.Percentage=0
-       e.Duration=' '
-     })
-   }
+  })
+  console.log("Percentage",percentage,duration);
+  OverallPercentage =Math.round(percentage/duration);
+  console.log("overall",OverallPercentage);
   
 const save=()=>{
   const project_detail={ Task_name:project,
     Start_date:startdate,
     End_date:enddate,
-    Percentage:0,
+    Percentage:OverallPercentage,
     Duration:0,
    Description:desc}
   localStorage.setItem("Project",JSON.stringify(project_detail))
@@ -72,6 +73,7 @@ const save=()=>{
    navigate('/')
 }
 const submit =()=>{
+  console.log("submit");
   if (project === "") {
     setProjecterror("*enter project name")
 }
@@ -96,8 +98,9 @@ if (desc === "") {
 else{
   setDescerror("")
 }
-  if(projecterror === ''&&startdateerror===""&&enddate==="" && descerror===""){
-    console.log(task);
+  if(projecterror === "" && startdateerror==="" && enddateerror==="" && descerror===""){
+
+    console.log("tasksubmission");
     localStorage.removeItem("Project")
     localStorage.removeItem("task")
     
@@ -105,7 +108,7 @@ else{
             Task_name:project,
       Start_date:startdate,
       End_date:enddate,
-      Percentage:10,
+      Percentage:OverallPercentage,
       Duration:0,
      Description:desc
           }).then((res)=>{
@@ -120,7 +123,7 @@ else{
           }).catch((e)=>console.log(e))
   }
   
-        // reset()
+       
         
 }
   return (

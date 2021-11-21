@@ -97,4 +97,16 @@ router.post("/getAProject",async (req,res)=>{
 			res.status(500).send({error:err.message});
 		}
 })
+router.get("/getAlllProject",async (req,res)=>{
+	
+    try 
+    {
+        
+		const category = await Category.find().populate("Project_id")
+		 console.log(category);
+		res.status(200).send(category)
+		} catch (err) {
+			res.status(500).send({error:err.message});
+		}
+})
 module.exports = router;

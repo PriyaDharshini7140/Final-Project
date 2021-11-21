@@ -20,7 +20,7 @@ function GanntChart() {
     }
     const history = useNavigate();
     useEffect(() => {
-        return axios.get("http://localhost:4000/project/getAllProject").then((res)=>{
+        return axios.get("http://localhost:4000/project/getAlllProject").then((res)=>{
             setstate(res.data)
         })
        
@@ -34,48 +34,39 @@ function GanntChart() {
             progress: 'Progress',
             child: 'category',
     };
+const data=[];
+    state.forEach((e)=>{
+        let d={
+          _id:e.Project_id.Task_name,
+          project_name:e.Project_id.Task_name,
+          StartDate:new Date(e.Project_id.Start_date),
+         category:e.Task.map((e)=>{
+           return{
+             _id:e.Task_name,
+             project_name:e.Task_name,
+             StartDate:new Date(e.Start_date),
+            
+             Duration:e.Duration,
+             Progress:e.Percentage
+           }
+         })
+        }
+        data.push(d)
+    })
     const GanttData = [
-        {
-            _id: "1",
-            project_name: 'Project Initiation',
-            Start_date: new Date('04/02/2019'),
-            End_Date: new Date('04/21/2019'),
-            category: [
-                { _id: "1", project_name: 'Identify Site location', StartDate: new Date('04/02/2019'), Duration: 4, Progress: 50 },
-                {  _id: "1",project_name: 'Perform Soil test', StartDate: new Date('04/02/2019'), Duration: 4, Progress: 50 },
-                { _id: "1", project_name: 'Soil test approval', StartDate: new Date('04/02/2019'), Duration: 4, Progress: 50 },
-            ]
-        },
-        {
-            _id: "1",
-            project_name: 'Project Estimation',
-            StartDate: new Date('04/02/2019'),
-            EndDate: new Date('04/21/2019'),
-            category: [
-                { _id: "1",project_name: 'Develop floor plan for estimation', StartDate: new Date('04/04/2019'), Duration: 3, Progress: 100 },
-                {_id: "1", project_name: 'List materials', StartDate: new Date('04/04/2019'), Duration: 3, Progress: 50 },
-                {_id: "1", project_name: 'Estimation approval', StartDate: new Date('04/04/2019'), Duration: 3, Progress: 50 }
-            ]
-        },
-        {
-            _id: 9,
-            project_name: 'Project Estimation',
-            StartDate: new Date('04/02/2019'),
-            EndDate: new Date('04/21/2019'),
-            category: [
-                { _id: 10, project_name: 'Develop floor plan for estimation', StartDate: new Date('04/04/2019'), Duration: 3, Progress: 50 },
-                { _id: 11, project_name: 'List materials', StartDate: new Date('04/04/2019'), Duration: 3, Progress: 50 },
-                { _id: 12, project_name: 'Estimation approval', StartDate: new Date('04/04/2019'), Duration: 3, Progress: 50 }
-            ]
-        },
-    ];
-    const editOptions = {
-        allowAdding: true,
-        allowEditing: true,
-        allowDeleting: true,
-        allowTaskbarEditing:true,
-        mode:"Dialog"
-    };
+      {
+          _id: "1",
+          project_name: 'Project Initiation',
+          StartDate: new Date('11/20/2021'),
+          EndDate: new Date('12/20/2021'),
+          category: [
+              { _id: "2", project_name: 'Identify Site location', StartDate: new Date('11/20/2021'), Duration: 4, Progress: 50 },
+              {  _id: "3",project_name: 'Perform Soil test', StartDate: new Date('11/29/2021'), Duration: 4, Progress: 50 },
+              { _id: "4", project_name: 'Soil test approval', StartDate: new Date('12/7/2021'), Duration: 4, Progress: 50 },
+          ]
+      }]
+ console.log(data);
+    
     return (
         <div>
             <br/>
@@ -92,15 +83,14 @@ function GanntChart() {
                     </ul>
             </div>
             <br/>
-            <GanttComponent dataSource={GanttData} 
- height="550px" taskFields={taskFields} timelineSettings={{timelineViewMode:timeline}} editSettings={editOptions}
-            toolbar={['Add',"Edit","Update"]}
+            <GanttComponent dataSource={data}
+            timelineSettings={{timelineViewMode:timeline}}
+ height="550px" taskFields={taskFields} 
+            
             />
-            <Inject services={[Edit,Toolbar]}></Inject>
-            <ColumnDirective field='Progress'></ColumnDirective>
-            <div>
-            {state.map((e)=> <button onClick={()=>load1(e._id)}>{e.Task_name}</button>)}
-            </div>
+           
+            
+           
            
         </div>
     )
