@@ -44,28 +44,12 @@ console.log(navigate);
     settask(newc);
   };
 
- let OverallPercentage = 0
-  // console.log(task);
-  let percentage=0
-  let duration=0
-  task.forEach((e)=>{
-var Start_date = moment(e.Start_date, "YYYY-MM-DD");
-	var End_date = moment(e.End_date, "YYYY-MM-DD");
-	var d=End_date.diff(Start_date,"days");
- percentage += e.Percentage * d;
-duration += d
-console.log("Percentage",percentage,duration);
-
-  })
-  console.log("Percentage",percentage,duration);
-  OverallPercentage =Math.round(percentage/duration);
-  console.log("overall",OverallPercentage);
-  
+ 
 const save=()=>{
   const project_detail={ Task_name:project,
     Start_date:startdate,
     End_date:enddate,
-    Percentage:OverallPercentage,
+    Percentage:0,
     Duration:0,
    Description:desc}
   localStorage.setItem("Project",JSON.stringify(project_detail))
@@ -108,7 +92,7 @@ else{
             Task_name:project,
       Start_date:startdate,
       End_date:enddate,
-      Percentage:OverallPercentage,
+      Percentage:0,
       Duration:0,
      Description:desc
           }).then((res)=>{

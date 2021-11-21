@@ -20,9 +20,10 @@ router.post('/addProject', async (req, res) => {
 			var date =moment.duration(d, "years").humanize();
 		}
 	}
+	console.log(date);
 	project.Duration= date;
 	try {
-		  await project.save();
+		   await project.save();
 		res.status(201).send(project);
 	} catch (error) {
 		

@@ -82,11 +82,7 @@ console.log(sdata);
       }
     return (
         <div>
-
-            <br/>
-            <br/>
-            <br/>
-            <br/>
+ <br/>
             <br/>
             <br/>
             <div className='home-nav'>
@@ -183,13 +179,20 @@ console.log(sdata);
            
            <div className='Dashboard-card'>
             
-             <h1><span>Project - {sdata.Project_id.Task_name}</span></h1>
+             <h1><span>{sdata.Project_id.Task_name}</span></h1>
              <p>Start Date - {moment(sdata.Project_id.Start_date).format("MMMD,YYYY")}</p>
              <p>End Date - {moment(sdata.Project_id.End_date).format("MMMD,YYYY")}</p>
-             <p>Duration - {sdata.Project_id.Duration}</p>
+             <p>Duration - {sdata.Project_id.Duration} days</p>
              <p>Progress - {sdata.Project_id.Percentage}%</p>
            </div>
-           
+           <div className='Dashboard-card-media'>
+            
+             <h1><span>{sdata.Project_id.Task_name}</span></h1>
+             <p>Start Date - {moment(sdata.Project_id.Start_date).format("MMMD,YYYY")}</p>
+             <p>End Date - {moment(sdata.Project_id.End_date).format("MMMD,YYYY")}</p>
+             <p>Duration - {sdata.Project_id.Duration} days</p>
+             <p>Progress - {sdata.Project_id.Percentage}%</p>
+           </div>
             <div className='Dashboard-table'>
             <TableContainer component={Paper}>
       <Table sx={{ minWidth: 500 }} aria-label="customized table">

@@ -37,7 +37,7 @@
     border-radius: 5px;
     padding-left: 15px;
     border:1px solid #2F86A6;
-  
+ 
 
     border-bottom-width: 2px;
   }
@@ -97,6 +97,7 @@
 }
 .modal-form input{
    margin:.5rem;
+   text-transform: uppercase;
 }
 
 .gg{
@@ -118,4 +119,17 @@
 .error{
     color:red;
     font-weight: bold;
+  }
+  @media  (max-width: 1024px){
+      .gg{
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+      .add-project{
+          width: 400px;
+      }
+      .input-textarea{
+        height: 80px;
+        width: 300px;
+      }
   }

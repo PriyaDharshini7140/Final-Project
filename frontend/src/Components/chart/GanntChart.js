@@ -4,25 +4,32 @@ import { ButtonComponent } from '@syncfusion/ej2-react-buttons';
 import './GanttChart.css'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+
 function GanntChart() {
    const [timeline, settimeline] = useState("Week")
     const [state, setstate] = useState([])
     const load =()=>{
-        return axios.get("http://localhost:4000/project/getAllProject").then((res)=>{
+        
+        return axios.get("http://localhost:4000/project/getAlllProject").then((res)=>{
             setstate(res.data)
         })
     }
     const load1 =(e)=>{
         console.log(e);
-        return axios.post("http://localhost:4000/project/getAProject",{_id:e}).then((res)=>{
-            history('/Dashboard', { state:{_id:res.data}, replace:true })
+        axios.patch(`http://localhost:4000/project/updateProject/${e._id}`,{
+            Percentage:e.Progress,
+            Duration:e.Duration
+        }).then((res)=>{
+            console.log(res.data);
+            return axios.post("http://localhost:4000/project/getAProject",{_id:e._id}).then((res)=>{
+                history('/Dashboard', { state:{_id:res.data}, replace:true })
+            })
         })
+       
     }
     const history = useNavigate();
     useEffect(() => {
-        return axios.get("http://localhost:4000/project/getAlllProject").then((res)=>{
-            setstate(res.data)
-        })
+        load()
        
      }, [])
      console.log(state);
@@ -30,22 +37,28 @@ function GanntChart() {
         id: '_id',
             name: 'project_name',
             startDate: 'StartDate',
+            endDate: 'EndDate',
             duration: 'Duration',
             progress: 'Progress',
             child: 'category',
     };
+
+    
 const data=[];
     state.forEach((e)=>{
         let d={
-          _id:e.Project_id.Task_name,
+          _id:e.Project_id._id,
           project_name:e.Project_id.Task_name,
           StartDate:new Date(e.Project_id.Start_date),
+          EndDate:new Date(e.Project_id.End_date),
+          Duration:e.Project_id.Duration,
+          Progress:e.Project_id.Percentage,
          category:e.Task.map((e)=>{
            return{
-             _id:e.Task_name,
+             _id:e._id,
              project_name:e.Task_name,
              StartDate:new Date(e.Start_date),
-            
+             EndDate:new Date(e.End_date),
              Duration:e.Duration,
              Progress:e.Percentage
            }
@@ -53,24 +66,17 @@ const data=[];
         }
         data.push(d)
     })
-    const GanttData = [
-      {
-          _id: "1",
-          project_name: 'Project Initiation',
-          StartDate: new Date('11/20/2021'),
-          EndDate: new Date('12/20/2021'),
-          category: [
-              { _id: "2", project_name: 'Identify Site location', StartDate: new Date('11/20/2021'), Duration: 4, Progress: 50 },
-              {  _id: "3",project_name: 'Perform Soil test', StartDate: new Date('11/29/2021'), Duration: 4, Progress: 50 },
-              { _id: "4", project_name: 'Soil test approval', StartDate: new Date('12/7/2021'), Duration: 4, Progress: 50 },
-          ]
-      }]
+   
  console.log(data);
+ const labelSettings = {
     
+    rightLabel: "Progress" 
+  };
+
     return (
         <div>
-            <br/>
-            <br/>
+            
+          
             <br/>
             <br/>
             <br/>
@@ -84,12 +90,20 @@ const data=[];
             </div>
             <br/>
             <GanttComponent dataSource={data}
+           
+             labelSettings={labelSettings} 
             timelineSettings={{timelineViewMode:timeline}}
  height="550px" taskFields={taskFields} 
-            
-            />
+onTaskbarClick={(e)=>{e.data.hasChildRecords?load1(e.data):history('/editTask', { state:{data:e.data}, replace:true })}}
+            >
+                <ColumnsDirective>
+           <ColumnDirective field="project_name"></ColumnDirective>
+           <ColumnDirective field="Duration"></ColumnDirective>
+           <ColumnDirective field="Progress"></ColumnDirective>
+           </ColumnsDirective>
+          
+            </GanttComponent>
            
-            
            
            
         </div>

@@ -34,39 +34,42 @@ router.post('/addCategory', async (req, res) => {
 
 router.patch('/updateCategory/:id',async (req,res)=>{
 
-	const updates = req.body.Task.map((e)=> Object.keys(e));
+	
+	console.log(req.body);
 	
 	
-	// console.log(updates);
 		try {
-			const category = await Category.findById(req.params.id)
-			// console.log(category);
+			const category = await Category.findOne({Project_id:req.params.id})
+			 
 			if (!category) {
 			   
 				return res.status(404).send({ error: 'category not found' });
 			}
 			category.Task.forEach((TaskUpdate) => {
-				req.body.Task.forEach((e)=>{
-					TaskUpdate.Start_date=e.Start_date;
-				TaskUpdate.End_date=e.End_date;
-				TaskUpdate.Percentage=e.Percentage;
-				var Start_date = moment(e.Start_date, "MM-DD-YYYY");
-	var End_date = moment(e.End_date, "MM-DD-YYYY");
-	var d=End_date.diff(Start_date,"days");
-	var date = moment.duration(d, "days").humanize();
-	if(d  > 90){
-		var d=End_date.diff(Start_date,"months")
-		var date =moment.duration(d, "months").humanize();
-		if(d > 12){
-			var d=End_date.diff(Start_date,"years")
-			var date =moment.duration(d, "years").humanize();
-		}
-	}
-	console.log(date);
-	TaskUpdate.Duration=date
+					if(req.body.Task_name === TaskUpdate.Task_name){
+						TaskUpdate.Start_date=req.body.Start_date;
+						TaskUpdate.End_date=req.body.End_date;
+						TaskUpdate.Percentage=req.body.Percentage;
+						var Start_date = moment(req.body.Start_date, "YYYY-MM-DD");
+						console.log(Start_date);
+			var End_date = moment(req.body.End_date, "YYYY-MM-DD");
+			var d=End_date.diff(Start_date,"days");
+			var date = moment.duration(d, "days").humanize();
+			if(d  > 90){
+				var d=End_date.diff(Start_date,"months")
+				var date =moment.duration(d, "months").humanize();
+				if(d > 12){
+					var d=End_date.diff(Start_date,"years")
+					var date =moment.duration(d, "years").humanize();
+				}
+			}
+			console.log(date);
+			TaskUpdate.Duration=date
+					}
+					
 				})
-			});
-			 await category.save();
+		
+			  await category.save();
 			res.send(category);
 		} catch (err) {
 			res.status(500).send({error: err.message});
