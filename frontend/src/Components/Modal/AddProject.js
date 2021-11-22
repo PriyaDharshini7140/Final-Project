@@ -24,6 +24,9 @@ export default function TransitionsModal() {
     { Task_name: 'DB',Start_date: '', End_date: '', Percentage: 0,Duration:0},
     { Task_name: 'TEST', Start_date: '',End_date: '', Percentage: 0,Duration:0},
   ]);
+  const [taskstatedate,settaskstatedate]=React.useState(false)
+  const [taskenddate,settaskenddate]=React.useState(false)
+  const [taskprogress,settaskprogress]=React.useState(false)
 const navigate = useNavigate();
 console.log(navigate);
   const Cache_project = JSON.parse(localStorage.getItem("Project"))
@@ -82,6 +85,27 @@ if (desc === "") {
 else{
   setDescerror("")
 }
+task.forEach((e)=>{
+  if (e.Start_date === "") {
+    settaskstatedate(`enter  start date`)
+  }
+  else{
+    settaskstatedate("")
+  }
+  if (e.End_date === "") {
+    settaskenddate(`enter end date`)
+  }
+  else{
+    settaskenddate("")
+  }
+  if (e.Percentage === null) {
+    settaskprogress(`enter  Percentage`)
+  }
+  else{
+    settaskprogress("")
+  }
+})
+
   if(projecterror === "" && startdateerror==="" && enddateerror==="" && descerror===""){
 
     console.log("tasksubmission");
@@ -135,6 +159,7 @@ else{
               name="projectname"
               placeholder="Enter project name"
               onChange={(e)=>{setProject(e.target.value) 
+                
                 setProjecterror(" ")}}
             />
             <div className='error'>{projecterror === "" ?"":projecterror}</div>
@@ -189,7 +214,9 @@ else{
                       required
                       onChange={(ev) => handleChangeInput(e.Task_name, ev)}
                     />
+                    <div className='error'>{taskstatedate === "" ?"":taskstatedate}</div>
                   </div>
+                  
                   <div>
                     <label for="enddate">End Date</label>
                     <input
@@ -201,7 +228,9 @@ else{
                       required
                       onChange={(ev) => handleChangeInput(e.Task_name, ev)}
                     />
+                     <div className='error'>{taskenddate === "" ?"":taskenddate}</div>
                   </div>
+                 
                   <div>
                     <label for="Progress Percentage">Progress</label>
                     <input
@@ -214,6 +243,7 @@ else{
                       required
                       onChange={(ev) => handleChangeInput(e.Task_name, ev)}
                     />
+                     <div className='error'>{taskprogress === "" ?"":taskprogress}</div>
                   </div>
                 </div>
               </div>
