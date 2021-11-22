@@ -23,6 +23,7 @@ function App() {
       <Route path="/editTask" element={<EditTask/>}/>
       </Routes>
      
+     <Footer/>
       </BrowserRouter>
       </div>
   );
