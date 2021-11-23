@@ -103,7 +103,7 @@ router.get("/getAlllProject",async (req,res)=>{
     try 
     {
         
-		const category = await Category.find().populate("Project_id")
+		const category = await Category.find().populate("Project_id").sort({createdAt: 'desc'})
 		 console.log(category);
 		res.status(200).send(category)
 		} catch (err) {

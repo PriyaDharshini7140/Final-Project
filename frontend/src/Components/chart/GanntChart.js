@@ -90,7 +90,7 @@ const data=[];
             </div>
             <br/>
             <GanttComponent dataSource={data}
-           
+         
              labelSettings={labelSettings} 
             timelineSettings={{timelineViewMode:timeline}}
  height="550px" taskFields={taskFields} 

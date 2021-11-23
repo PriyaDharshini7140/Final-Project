@@ -19,24 +19,76 @@ export default function TransitionsModal() {
   const [enddateerror,setEnddateerror]=React.useState(false)
   const [descerror,setDescerror]=React.useState(false)
   const [task, settask] = React.useState([
-    { Task_name: 'UI', Start_date: '', End_date: '', Percentage: 0,Duration:0 },
-    { Task_name: 'API', Start_date: '', End_date: '', Percentage: 0,Duration:0 },
-    { Task_name: 'DB',Start_date: '', End_date: '', Percentage: 0,Duration:0},
-    { Task_name: 'TEST', Start_date: '',End_date: '', Percentage: 0,Duration:0},
+    { Task_name: 'UI', Start_date: '', End_date: '', Percentage: 0,Duration:0 ,error:false},
+    { Task_name: 'API', Start_date: '', End_date: '', Percentage: 0,Duration:0 ,error:false},
+    { Task_name: 'DB',Start_date: '', End_date: '', Percentage: 0,Duration:0,error:false},
+    { Task_name: 'TEST', Start_date: '',End_date: '', Percentage: 0,Duration:0,error:false},
   ]);
-  const [taskstatedate,settaskstatedate]=React.useState(false)
-  const [taskenddate,settaskenddate]=React.useState(false)
-  const [taskprogress,settaskprogress]=React.useState(false)
+  const [taskvalidation,settaskvalidation]=React.useState(false)
+ 
 const navigate = useNavigate();
-console.log(navigate);
-  const Cache_project = JSON.parse(localStorage.getItem("Project"))
-  const Cache_task = JSON.parse(localStorage.getItem("task"))
-  // console.log(Cache_task);
+
+console.log(taskvalidation);
+
     const handleChangeInput = (id, event) => {
-    console.log(id);
+    
     const newc = task.map((i) => {
       if (id === i.Task_name ) {
+       if(event.target.name === "Start_date" ){
+         if(event.target.value !== ""){
+          let start = new Date(startdate)
+        
+          let end = new Date(event.target.value)
+          
+         if(end.getTime() >= start.getTime() ){
+          i.error = " "
+          i[event.target.name] = event.target.value;
+       }
+       else{
+         i.error = `${i.Task_name} start date should be equal to project start date  `
+       }
+         }
+         else{
+          i.error = `enter ${i.Task_name} start date `
+         }
+        
+       }
+       else if (event.target.name === "End_date") {
+        if(event.target.value !== ""){
+          let start = new Date(enddate)
+          let end = new Date(event.target.value)
+          
+         if(end.getTime() <= start.getTime() ){
+          i.error = " "
+          i[event.target.name] = event.target.value;
+       }
+       else{
+         i.error = `${i.Task_name} end date should be equal to project end date  `
+       }
+
+        }
+   else{
+          i.error = `enter ${i.Task_name} end date `
+         }
        
+      }
+      else{
+       
+        if(event.target.name === "Percentage" ){
+          if(event.target.value !== ""){
+            if(event.target.value > 100){
+              i.error = `${i.Task_name} Percentage should be less than or equal to 100 `
+            }
+            else{
+              i.error = " "
+        i[event.target.name] = event.target.value;
+            }
+          }
+          else{
+            i.error = `enter ${i.Task_name} percentage `
+           }
+        }
+      }
           i[event.target.name] = event.target.value;
         }
        
@@ -47,18 +99,29 @@ console.log(navigate);
     settask(newc);
   };
 
+
+
+
+ const validate =(e)=>{
+   console.log(e);
+
+  let start = new Date(startdate)
+  let end = new Date(e)
+  console.log(start.getTime() < end.getTime());
+  if(start.getTime() > end.getTime()){
+    setEnddateerror("End date is lesser than start date")
+  }
+  else if(start.getTime() === end.getTime()){
+    setEnddateerror("End date and  start date are same")
+   }
+  else{
+    setEnddateerror(" ")
+    setEnddate(e)
+  }
+ }
  
-const save=()=>{
-  const project_detail={ Task_name:project,
-    Start_date:startdate,
-    End_date:enddate,
-    Percentage:0,
-    Duration:0,
-   Description:desc}
-  localStorage.setItem("Project",JSON.stringify(project_detail))
-   localStorage.setItem("task",JSON.stringify(task))
-   navigate('/')
-}
+
+
 const submit =()=>{
   console.log("submit");
   if (project === "") {
@@ -86,27 +149,15 @@ else{
   setDescerror("")
 }
 task.forEach((e)=>{
-  if (e.Start_date === "") {
-    settaskstatedate(`enter  start date`)
-  }
-  else{
-    settaskstatedate("")
-  }
-  if (e.End_date === "") {
-    settaskenddate(`enter end date`)
-  }
-  else{
-    settaskenddate("")
-  }
-  if (e.Percentage === null) {
-    settaskprogress(`enter  Percentage`)
-  }
-  else{
-    settaskprogress("")
-  }
+ if(e.Start_date === "" || e.End_date === "" || e.Percentage === null){
+   settaskvalidation(`add Task detail`)
+ }
+ else{
+   settaskvalidation("")
+ }
 })
 
-  if(projecterror === "" && startdateerror==="" && enddateerror==="" && descerror===""){
+  if(projecterror === "" && startdateerror==="" && enddateerror==="" && descerror==="" && taskvalidation ===""){
 
     console.log("tasksubmission");
     localStorage.removeItem("Project")
@@ -123,7 +174,15 @@ task.forEach((e)=>{
             console.log(res.data);
                axios.post('http://localhost:4000/category/addCategory',{
               Project_id:res.data._id,
-              Task:task
+              Task:task.map((e)=>{
+                return{
+                  Task_name:e.Task_name,
+    Start_date: e.Start_date,
+    End_date: e.End_date,
+    Percentage: e.Percentage,
+    Duration: e.Duration,
+                }
+              })
             }).then((res)=>{
               console.log(res.data);
               navigate('/')
@@ -155,7 +214,7 @@ task.forEach((e)=>{
               className="input"
               id="projectname"
               type="text"
-              value={Cache_project?Cache_project.Task_name:project}
+              value={project}
               name="projectname"
               placeholder="Enter project name"
               onChange={(e)=>{setProject(e.target.value) 
@@ -170,7 +229,7 @@ task.forEach((e)=>{
               className="input"
               id="startdate"
               type="date"
-              value={Cache_project?Cache_project.Start_date:startdate}
+              value={startdate}
               name="startdate"
               onChange={(e)=>{setStartdate(e.target.value)
                 setStartdateerror(" ")}}
@@ -181,8 +240,8 @@ task.forEach((e)=>{
           </div>
           <div>
             <label for="enddate">End Date</label>
-            <input className="input" id="enddate" type="date" value={Cache_project?Cache_project.End_date:enddate} name="enddate" onChange={(e)=>{setEnddate(e.target.value)
-              setEnddateerror(" ")}} required />
+            <input className="input" id="enddate" type="date" value={enddate} name="enddate" onChange={(e)=>{validate(e.target.value)
+              }} required />
             <div className='error'>{enddateerror === "" ?"":enddateerror}</div>
           </div>
          
@@ -191,7 +250,7 @@ task.forEach((e)=>{
         <div>
         <div className="textarea">
             <label for="Description">Description</label>
-            <textarea className="input-textarea" id="eDescription" type="date" value={Cache_project?Cache_project.Description:desc}   placeholder="Description" onChange={(e)=>{setDesc(e.target.value)
+            <textarea className="input-textarea" id="eDescription" type="date" value={desc}   placeholder="Description" onChange={(e)=>{setDesc(e.target.value)
               setDescerror(" ")}} required/>
           </div>
           <div className='error'>{descerror === "" ?"":descerror}</div>
@@ -200,6 +259,7 @@ task.forEach((e)=>{
            
             return (
               <div>
+                 <div className='error'>{taskvalidation===""  ?"":taskvalidation }</div>
                 <p className="task">{e.Task_name}</p>
                 <div className="gg">
                   <div>
@@ -214,7 +274,8 @@ task.forEach((e)=>{
                       required
                       onChange={(ev) => handleChangeInput(e.Task_name, ev)}
                     />
-                    <div className='error'>{taskstatedate === "" ?"":taskstatedate}</div>
+                   
+                   
                   </div>
                   
                   <div>
@@ -228,7 +289,8 @@ task.forEach((e)=>{
                       required
                       onChange={(ev) => handleChangeInput(e.Task_name, ev)}
                     />
-                     <div className='error'>{taskenddate === "" ?"":taskenddate}</div>
+                    
+                    
                   </div>
                  
                   <div>
@@ -243,9 +305,11 @@ task.forEach((e)=>{
                       required
                       onChange={(ev) => handleChangeInput(e.Task_name, ev)}
                     />
-                     <div className='error'>{taskprogress === "" ?"":taskprogress}</div>
+                    
+                     
                   </div>
                 </div>
+                <div className='error'>{e.error === "" ?"":e.error}</div>
               </div>
             );
           })
@@ -254,7 +318,7 @@ task.forEach((e)=>{
         </div>
 
         <div className="modal-bottom">
-          <button className="modal-button-bottom" onClick={()=>save()}>Save</button>
+      
           <button className="modal-button-bottom" onClick={()=>submit()}>Submit</button>
           <button
             className="modal-button-bottom"

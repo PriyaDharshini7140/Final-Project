@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {useLocation} from 'react-router-dom';
 import moment  from 'moment';
 import axios from 'axios';
@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import './EditTask.css'
 function EditTask() {
     const location = useLocation();
-    console.log(location.state.data.parentItem);
+    console.log(location.state.data);
     const [Project_id,setProject_id]=React.useState(location.state.data.parentItem.taskId)
     const [progress,setProgress]=React.useState(location.state.data.taskData.Progress)
   const [startdate,setStartdate]=React.useState(moment(location.state.data.taskData.StartDate).format("YYYY-MM-DD"))
@@ -14,7 +14,15 @@ function EditTask() {
   const [projecterror,setProjecterror]=React.useState(false)
   const [startdateerror,setStartdateerror]=React.useState(false)
   const [enddateerror,setEnddateerror]=React.useState(false)
+  const [state, setstate] = React.useState({})
  console.log(Project_id,progress,startdate,enddate);
+ useEffect(() => {
+  return axios.post("http://localhost:4000/project/getAProject",{_id:Project_id}).then((res)=>{
+    console.log(res.data);
+    setstate(res.data)
+})
+ }, [Project_id])
+ console.log(state);
  const navigate = useNavigate();
 const updateTask=()=>{
     console.log("task");
@@ -53,7 +61,39 @@ const updateTask=()=>{
     })
 }
 }
+const validatePercentage =(e)=>{
+  console.log(e);
+  setProgress(e)
+  if(e > 100){
+    setProjecterror("Percentage should be less than or equal to 100 ")
+  }
+  else{
+    setProjecterror(" ")
+    setProgress(e)
+  }
 
+}
+const validate =(e)=>{
+  console.log(e);
+  setEnddate(e)
+  let start_project = new Date(state.Project_id.Start_date)
+  let end_project = new Date(state.Project_id.Start_date)
+ let start = new Date(startdate)
+ let end = new Date(e)
+
+ if(start.getTime() > end.getTime()){
+   setEnddateerror("End date is less than start date")
+ }
+
+ else if(start.getTime() === end.getTime()){
+   setEnddateerror("End date and  start date are same")
+  }
+ else{
+   setEnddateerror(" ")
+   setEnddate(e)
+ }
+}
+console.log(enddateerror);
     return (
         <div> 
       <br/>
@@ -78,10 +118,11 @@ const updateTask=()=>{
               value={progress}
               name="projectname"
               placeholder="Enter Task Progres"
-              onChange={(e)=>setProgress(e.target.value)}
+              onChange={(e)=>validatePercentage(e.target.value)}
             />
-             <div className='error'>{projecterror === "" ?"":projecterror}</div> 
+            
           </div>
+          <div className='error'>{projecterror === "" ?"":projecterror}</div> 
           <div>
             <label for="startdate">Start Date</label>
             <input
@@ -94,18 +135,19 @@ const updateTask=()=>{
               placeholder="start date"
               required
             />
-             <div className='error'>{startdateerror === "" ?"":startdateerror}</div> 
+            
           </div>
+          <div className='error'>{startdateerror === "" ?"":startdateerror}</div> 
           <div>
             <label for="enddate">End Date</label>
             <input className="input" id="enddate" type="date" 
             value={enddate} 
             name="enddate" 
-            onChange={(e)=>setEnddate(e.target.value)} 
+            onChange={(e)=>validate(e.target.value)} 
               required />
-            <div className='error'>{enddateerror === "" ?"":enddateerror}</div> 
+           
           </div>
-        
+          <div className='error'>{enddateerror === "" ?"":enddateerror}</div> 
           <div className="modal-bottom">
          
           <button className="modal-button-bottom" onClick={()=>updateTask()}>Submit</button>
