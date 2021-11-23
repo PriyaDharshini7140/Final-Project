@@ -37,15 +37,15 @@ console.log(taskvalidation);
        if(event.target.name === "Start_date" ){
          if(event.target.value !== ""){
           let start = new Date(startdate)
-        
+          let start_end = new Date(enddate)
           let end = new Date(event.target.value)
           
-         if(end.getTime() >= start.getTime() ){
+         if(end.getTime() >= start.getTime() && end.getTime() <= start_end.getTime()){
           i.error = " "
           i[event.target.name] = event.target.value;
        }
        else{
-         i.error = `${i.Task_name} start date should be equal to project start date  `
+         i.error = `choose a ${i.Task_name} start date between Project start date and end date `
        }
          }
          else{
@@ -56,14 +56,16 @@ console.log(taskvalidation);
        else if (event.target.name === "End_date") {
         if(event.target.value !== ""){
           let start = new Date(enddate)
+          let start_end = new Date(startdate)
           let end = new Date(event.target.value)
           
-         if(end.getTime() <= start.getTime() ){
+         if(end.getTime() <= start.getTime() && end.getTime() >= start_end.getTime() ){
           i.error = " "
           i[event.target.name] = event.target.value;
        }
+      
        else{
-         i.error = `${i.Task_name} end date should be equal to project end date  `
+         i.error = ` choose a ${i.Task_name} end date between Project start date and end date `
        }
 
         }
